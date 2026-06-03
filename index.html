@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum • Assistant &amp; Optimisateur de CV ATS</title>
+  <!-- Google Fonts: Inter & Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- External Library CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-zinc-900 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-100">
+
+  <!-- NAVBAR -->
+  <header class="bg-white/80 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-teal-600/10">
+          <i data-lucide="sparkles" class="w-5 h-5 animate-pulse"></i>
+        </div>
+        <div>
+          <span class="text-lg font-black font-display tracking-tight text-zinc-950 uppercase bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-emerald-600">
+            Curriculum
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-600 block leading-none font-mono">
+            Optimisateur ATS
+          </span>
+        </div>
+      </div>
+
+      <!-- General Operations -->
+      <div class="flex items-center gap-3">
+        <button id="btn-seed-data" class="text-[11px] font-bold text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200/80 px-3 py-1.5 rounded-lg transition-colors cursor-pointer font-display">
+          Exemple Type
+        </button>
+        <button id="btn-clear-data" class="text-[11px] font-bold text-red-600 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-100 px-3 py-1.5 rounded-lg transition-colors cursor-pointer font-display">
+          Vider
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD GRID -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- LEFT PANEL: OPERATIONS & FORMS -->
+    <div class="lg:col-span-5 space-y-6 flex flex-col no-print">
+      
+      <!-- Panel Selector Nav tabs -->
+      <div class="bg-white p-1.5 rounded-2xl border border-zinc-200 shadow-sm flex shrink-0">
+        <button id="tab-nav-create" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all cursor-pointer font-display bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/10">
+          <i data-lucide="file-text" class="w-4.5 h-4.5"></i> Créateur pas-à-pas
+        </button>
+        <button id="tab-nav-analyze" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all cursor-pointer font-display text-zinc-500 hover:text-zinc-950">
+          <i data-lucide="sparkles" class="w-4.5 h-4.5"></i> Assistant IA &amp; Offre
+        </button>
+      </div>
+
+      <!-- PANEL A: Guided Step-by-Step Form -->
+      <div id="panel-form-stepper" class="bg-white/90 backdrop-blur-md rounded-2xl border border-zinc-200/80 shadow-xl p-6 md:p-8 flex flex-col flex-1 min-h-[500px]">
+        <!-- Stepper Progress Header -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <span id="step-index-badge" class="text-xs font-mono text-zinc-500 uppercase tracking-widest bg-zinc-100 px-2.5 py-1 rounded-md">
+              Étape 1 / 15
+            </span>
+            <span id="step-progress-percent" class="text-sm font-semibold text-teal-600 font-display">0% complété</span>
+          </div>
+          <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden border border-zinc-200/50">
+            <div id="step-progress-bar" class="bg-gradient-to-r from-teal-500 to-emerald-600 h-full rounded-full transition-all duration-300" style="width: 6%"></div>
+          </div>
+          <div class="mt-4 flex items-center gap-3 text-zinc-800">
+            <div id="step-icon-container" class="p-2 bg-teal-50 text-teal-600 rounded-lg">
+              <i data-lucide="user" class="w-5 h-5"></i>
+            </div>
+            <h2 id="step-title" class="text-lg font-bold font-display tracking-tight text-zinc-850">
+              Prénom
+            </h2>
+          </div>
+        </div>
+
+        <!-- Dynamic Form Fields Container -->
+        <div class="flex-1 overflow-y-auto mb-6 pr-1 max-h-[480px]" id="step-fields-scroll">
+          
+          <!-- STEP 1: First Name -->
+          <div data-step-id="1" class="step-card space-y-2">
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Prénom <span class="text-red-500">*</span></label>
+            <input type="text" id="in-firstname" placeholder="Jean" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+          </div>
+
+          <!-- STEP 2: Last Name -->
+          <div data-step-id="2" class="step-card hidden space-y-2">
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Nom de famille <span class="text-red-500">*</span></label>
+            <input type="text" id="in-lastname" placeholder="Dupond" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+          </div>
+
+          <!-- STEP 3: Title -->
+          <div data-step-id="3" class="step-card hidden space-y-2">
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Titre professionnel <span class="text-red-500">*</span></label>
+            <p class="text-xs text-zinc-500">Poste exact ciblé dans l'algorithme des recruteurs.</p>
+            <input type="text" id="in-title" placeholder="Développeur Web Full-Stack" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+          </div>
+
+          <!-- STEP 4: Email -->
+          <div data-step-id="4" class="step-card hidden space-y-2">
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Adresse e-mail <span class="text-red-500">*</span></label>
+            <input type="email" id="in-email" placeholder="adresse@domaine.com" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+          </div>
+
+          <!-- STEP 5: Phone -->
+          <div data-step-id="5" class="step-card hidden space-y-2">
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Téléphone <span class="text-zinc-400">(Optionnel)</span></label>
+            <input type="tel" id="in-phone" placeholder="06 12 34 56 78" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+          </div>
+
+          <!-- STEP 6: Location -->
+          <div data-step-id="6" class="step-card hidden grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Ville</label>
+              <input type="text" id="in-city" placeholder="Paris" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Pays</label>
+              <input type="text" id="in-country" placeholder="France" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+            </div>
+          </div>
+
+          <!-- STEP 7: Links -->
+          <div data-step-id="7" class="step-card hidden space-y-4">
+            <div class="space-y-2">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">LinkedIn <span class="text-zinc-400">(Optionnel)</span></label>
+              <input type="url" id="in-linkedin" placeholder="linkedin.com/in/nom" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Portfolio / Site web <span class="text-zinc-400">(Optionnel)</span></label>
+              <input type="url" id="in-website" placeholder="www.portfolio.com" class="form-input-styled w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-sm">
+            </div>
+          </div>
+
+          <!-- STEP 8: PROFILE PHOTO -->
+          <div data-step-id="8" class="step-card hidden space-y-4">
+            <div class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-zinc-200 hover:border-teal-500 rounded-2xl bg-zinc-50/50 transition-all relative" id="photo-drag-area">
+              <div class="w-24 h-24 rounded-full border-2 border-white shadow-md bg-zinc-100 overflow-hidden relative flex items-center justify-center mb-4">
+                <img id="guided-photo-preview" src="" class="w-full h-full object-cover hidden" alt="Photo">
+                <div id="guided-photo-placeholder" class="text-zinc-400 w-full h-full flex items-center justify-center bg-zinc-200">
+                  <i data-lucide="user" class="w-10 h-10 text-zinc-400"></i>
+                </div>
+              </div>
+
+              <p class="text-xs text-zinc-500 text-center mb-4">
+                Glissez-déposez une photo ici ou cliquez sur le bouton.<br>
+                Limitée à 2 Mo. PNG/JPG recommandé.
+              </p>
+
+              <div class="flex gap-2.5">
+                <label class="flex items-center gap-1.5 text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 px-4 py-2.5 rounded-xl shadow-md cursor-pointer transition-all font-display">
+                  <i data-lucide="upload" class="w-3.5 h-3.5"></i> Choisir une photo
+                  <input type="file" id="in-photo-file" accept="image/*" class="hidden">
+                </label>
+                <button type="button" id="btn-delete-photo" class="hidden flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl px-4 py-2.5 cursor-pointer transition-all font-display">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+
+            <div class="p-3.5 bg-zinc-100 rounded-xl text-[11px] text-zinc-600 leading-normal">
+              💡 <strong>Facultatif :</strong> S'il n'y a pas de photo requise dans votre domaine, ignorez simplement cette étape. Un bel avatar par défaut sera configuré.
+            </div>
+          </div>
+
+          <!-- STEP 9: Summary Description -->
+          <div data-step-id="9" class="step-card hidden space-y-4">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 font-sans">À propos de vous</label>
+              <button type="button" id="btn-ai-gen-summary" class="flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-lg px-3 py-1.5 cursor-pointer transition-all font-display">
+                <i data-lucide="wand-2" class="w-3 h-3"></i> Générer via l'IA
+              </button>
+            </div>
+            <p class="text-xs text-zinc-500">Un texte court accrocheur. L'IA peut le synthétiser d'après vos acquis.</p>
+            <textarea id="in-summary" rows="5" placeholder="Racontez brièvement vos objectifs de carrière..." class="w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-xs resize-none leading-relaxed"></textarea>
+          </div>
+
+          <!-- STEP 10: Skills list -->
+          <div data-step-id="10" class="step-card hidden space-y-4">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Compétences clés</label>
+              <button type="button" id="btn-ai-suggest-skills" class="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg px-3 py-1.5 cursor-pointer transition-all font-display">
+                <i data-lucide="sparkles" class="w-3 h-3"></i> Suggestions IA
+              </button>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="in-temp-skill" placeholder="Ex: React, Gestion agile, Négociation..." class="flex-1 border border-zinc-200 rounded-xl px-4 py-2.5 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all text-xs">
+              <button type="button" id="btn-add-skill" class="bg-zinc-800 text-white hover:bg-zinc-900 font-semibold px-4 py-2.5 rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all">
+                Ajouter
+              </button>
+            </div>
+
+            <!-- Skills output -->
+            <div class="border border-zinc-100 bg-zinc-50/30 rounded-xl p-3.5">
+              <span class="text-[10px] uppercase font-bold text-zinc-400 block mb-2 tracking-wider">Vos compétences</span>
+              <div id="skills-list-badges" class="flex flex-wrap gap-1.5">
+                <!-- Badges will render here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 11: Experiences list -->
+          <div data-step-id="11" class="step-card hidden space-y-4">
+            <h3 class="text-sm font-semibold text-zinc-700">Votre parcours en entreprise</h3>
+            
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="exp-role" placeholder="Poste (ex: Expert Métier)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+                <input type="text" id="exp-company" placeholder="Entreprise (ex: Innov Corp)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="exp-start" placeholder="Date début (ex: 12/2022)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+                <input type="text" id="exp-end" placeholder="Date fin (ex: Présent)" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+              </div>
+              <textarea id="exp-desc" rows="2" placeholder="Description des attributions et missions..." class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px] resize-none"></textarea>
+              <input type="text" id="exp-achievements" placeholder="Résultat clé de performance (ex: CA +15%)" class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+              <button type="button" id="btn-add-experience" class="w-full bg-teal-600 text-white hover:bg-teal-700 font-semibold text-xs py-2 rounded-lg cursor-pointer flex items-center justify-center gap-1.5 font-display transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Ajouter l'expérience
+              </button>
+            </div>
+
+            <!-- Added list container -->
+            <div class="space-y-2 max-h-[160px] overflow-y-auto pr-1" id="experiences-list-items">
+              <!-- Rendered rows -->
+            </div>
+          </div>
+
+          <!-- STEP 12: Educations list -->
+          <div data-step-id="12" class="step-card hidden space-y-4">
+            <h3 class="text-sm font-semibold text-zinc-700">Formations et Diplômes</h3>
+            
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="edu-degree" placeholder="Intitulé du diplôme (ex: Licence)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+                <input type="text" id="edu-school" placeholder="Établissement (ex: Sorbonne)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+              </div>
+              <div class="grid grid-cols-3 gap-3">
+                <input type="text" id="edu-city" placeholder="Ville" class="border border-zinc-200 bg-white rounded-lg px-2 py-2 text-[11px]">
+                <input type="text" id="edu-start" placeholder="Début (AAAA)*" class="border border-zinc-200 bg-white rounded-lg px-2 py-2 text-[11px]">
+                <input type="text" id="edu-end" placeholder="Fin (ou 'En cours')" class="border border-zinc-200 bg-white rounded-lg px-2 py-2 text-[11px]">
+              </div>
+              <input type="text" id="edu-desc" placeholder="Détails additionnels / Mention / Majeure" class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-[11px]">
+              <button type="button" id="btn-add-education" class="w-full bg-teal-600 text-white hover:bg-teal-700 font-semibold text-xs py-2 rounded-lg cursor-pointer flex items-center justify-center gap-1.5 font-display transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Ajouter le diplôme
+              </button>
+            </div>
+
+            <!-- List container -->
+            <div class="space-y-2 max-h-[160px] overflow-y-auto pr-1" id="educations-list-items">
+              <!-- Rendered rows -->
+            </div>
+          </div>
+
+          <!-- STEP 13: Languages list -->
+          <div data-step-id="13" class="step-card hidden space-y-4">
+            <h3 class="text-sm font-semibold text-zinc-700">Langues parlées <span class="text-zinc-400">(Facultatif)</span></h3>
+            
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 flex gap-2 items-center">
+              <input type="text" id="lang-name" placeholder="Ex: Allemand" class="flex-1 border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+              <select id="lang-level" class="border border-zinc-200 bg-white rounded-lg px-2 py-2 text-xs focus:outline-none">
+                <option value="débutant">Débutant</option>
+                <option value="intermédiaire" selected>Intermédiaire</option>
+                <option value="avancé">Avancé</option>
+                <option value="bilingue">Bilingue / Natif</option>
+              </select>
+              <button type="button" id="btn-add-lang" class="bg-zinc-800 text-white hover:bg-zinc-900 font-semibold text-xs px-3.5 py-2.5 rounded-lg transition-all cursor-pointer">
+                Ajouter
+              </button>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5" id="languages-list-items">
+              <!-- Elements here -->
+            </div>
+          </div>
+
+          <!-- STEP 14: Certifications -->
+          <div data-step-id="14" class="step-card hidden space-y-4">
+            <h3 class="text-sm font-semibold text-zinc-700">Certifications d'excellence <span class="text-zinc-400">(Facultatif)</span></h3>
+            
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="cert-name" placeholder="Nom de l'agrément (ex: ITIL)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+                <input type="text" id="cert-issuer" placeholder="Académie émettrice (ex: Axelos)*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+              </div>
+              <input type="text" id="cert-year" placeholder="Année (ex: 2024)*" class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+              <button type="button" id="btn-add-cert" class="w-full bg-teal-600 text-white hover:bg-teal-700 font-semibold text-xs py-2 rounded-lg cursor-pointer flex items-center justify-center gap-1.5 font-display transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Enregistrer
+              </button>
+            </div>
+
+            <div id="certifications-list-items" class="space-y-1">
+              <!-- Certified list -->
+            </div>
+          </div>
+
+          <!-- STEP 15: Projects -->
+          <div data-step-id="15" class="step-card hidden space-y-4">
+            <h3 class="text-sm font-semibold text-zinc-700">Projets &amp; Réalisations <span class="text-zinc-400">(Facultatif)</span></h3>
+            
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="proj-name" placeholder="Titre du projet*" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+                <input type="text" id="proj-tech" placeholder="Technologies (ex: React, Git)" class="border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+              </div>
+              <input type="text" id="proj-link" placeholder="Lien en ligne (ex: github.com/user)" class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs">
+              <textarea id="proj-desc" rows="2" placeholder="Description courte des apports..." class="w-full border border-zinc-200 bg-white rounded-lg px-3 py-2 text-xs resize-none"></textarea>
+              <button type="button" id="btn-add-project" class="w-full bg-teal-600 text-white hover:bg-teal-700 font-semibold text-xs py-2 rounded-lg cursor-pointer flex items-center justify-center gap-1.5 font-display transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Enregistrer
+              </button>
+            </div>
+
+            <div id="projects-list-items" class="space-y-1.5">
+              <!-- Projects items -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Forms Error Display -->
+        <div id="guided-form-error" class="hidden p-3.5 mb-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start gap-2.5 text-xs font-semibold">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 mt-0.5"></i>
+          <span id="guided-error-text">Message</span>
+        </div>
+
+        <!-- Stepper Navigation Controls -->
+        <div class="flex justify-between items-center pt-4 border-t border-zinc-100 mt-auto">
+          <button type="button" id="btn-step-prev" disabled class="flex items-center gap-1.5 text-xs font-semibold text-zinc-650 hover:text-zinc-800 border border-zinc-200 hover:bg-zinc-50 rounded-xl px-4 py-2.5 transition-all cursor-pointer disabled:opacity-35 disabled:pointer-events-none font-display">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Précédent
+          </button>
+          
+          <button type="button" id="btn-step-next" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 px-5 py-2.5 rounded-xl shadow-md cursor-pointer transition-all font-display">
+            <span>Suivant</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL B: AI ATS Auditor & Adapter (Hidden initially) -->
+      <div id="panel-ai-dashboard" class="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-xl rounded-2xl p-6 md:p-8 flex-col flex-1 hidden">
+        <!-- Sub tabs: Audit vs Adaptation -->
+        <div class="flex border-b border-zinc-100 mb-6 gap-2 shrink-0">
+          <button id="ai-sub-tab-audit" class="flex-1 sm:flex-none flex items-center justify-center gap-2 pb-3 px-4 font-semibold text-sm cursor-pointer border-b-2 transition-all font-display border-teal-600 text-teal-700">
+            <i data-lucide="file-text" class="w-4 h-4"></i> Audit &amp; Import
+          </button>
+          <button id="ai-sub-tab-match" class="flex-1 sm:flex-none flex items-center justify-center gap-2 pb-3 px-4 font-semibold text-sm cursor-pointer border-b-2 transition-all font-display border-transparent text-zinc-500 hover:text-zinc-800">
+            <i data-lucide="briefcase" class="w-4 h-4"></i> Adapter à l'offre
+          </button>
+        </div>
+
+        <!-- Error display -->
+        <div id="ai-dashboard-error" class="hidden p-3.5 mb-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start gap-2.5 text-xs font-semibold">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 mt-0.5"></i>
+          <span id="ai-dashboard-error-text">Message</span>
+        </div>
+
+        <div id="ai-dashboard-scrollable" class="flex-1 overflow-y-auto pr-1 max-h-[500px] space-y-6">
+
+          <!-- OPTION 1: Audit & Raw Extraction -->
+          <div id="ai-section-audit" class="space-y-4">
+            <div class="space-y-1">
+              <h2 class="text-sm font-extrabold text-zinc-850 uppercase tracking-tight font-display">Extraction &amp; Audit de CV brut</h2>
+              <p class="text-[11px] text-zinc-500 leading-relaxed">
+                Collez le texte brut de votre CV existant pour en extraire et importer l'essentiel tout en testant instantanément les métriques de tri.
+              </p>
+            </div>
+
+            <textarea id="ai-raw-cv-text" rows="6" placeholder="Collez votre CV ici..." class="w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all font-sans text-xs resize-none leading-relaxed"></textarea>
+
+            <div class="flex justify-end">
+              <button id="btn-run-audit" class="flex items-center gap-2 text-xs font-bold text-white bg-zinc-850 hover:bg-zinc-900 border border-zinc-700 px-5 py-3 rounded-xl shadow-md cursor-pointer transition-all font-display">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Diagnostiquer &amp; Extraire
+              </button>
+            </div>
+
+            <!-- Audit outputs -->
+            <div id="ai-audit-output-wrapper" class="hidden border border-zinc-200 rounded-2xl p-5 bg-zinc-50/30 space-y-5 animate-slide">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-zinc-100">
+                <div class="flex items-center gap-3">
+                  <div class="relative flex items-center justify-center">
+                    <svg class="w-16 h-16 transform -rotate-90">
+                      <circle cx="32" cy="32" r="28" stroke="#f4f4f5" stroke-width="4" fill="transparent" />
+                      <circle id="audit-score-circle" cx="32" cy="32" r="28" stroke="#0d9488" stroke-dasharray="175.9" stroke-dashoffset="175.9" stroke-width="4" fill="transparent" />
+                    </svg>
+                    <span id="audit-score-text" class="absolute text-sm font-black font-mono text-teal-800">0/100</span>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-extrabold text-zinc-800 uppercase tracking-tight font-display">Score Initial ATS</h4>
+                    <p class="text-[9px] text-zinc-500">Un score d'au moins 85 est recommandé pour les ATS.</p>
+                  </div>
+                </div>
+
+                <button id="btn-import-audit-data" class="flex items-center gap-1.5 text-xs font-black text-white bg-teal-650 hover:bg-teal-700 shadow-md px-4 py-2.5 rounded-xl cursor-pointer transition-all font-display">
+                  <i data-lucide="file-check" class="w-3.5 h-3.5"></i> Importer les données
+                </button>
+              </div>
+
+              <!-- Extractions alert message -->
+              <div id="alert-import-success" class="hidden p-3 bg-teal-50 border border-teal-200 text-teal-800 font-semibold rounded-xl text-xs flex items-center gap-2 animate-bounce">
+                <i data-lucide="check" class="w-4 h-4"></i> Importation effectuée ! Vous pouvez rebasculer sur le "Créateur".
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                <!-- Weakness list -->
+                <div class="space-y-2">
+                  <h5 class="font-extrabold text-amber-800 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Lacunes détectées
+                  </h5>
+                  <ul id="audit-weakness-list" class="space-y-1.5 list-disc list-inside text-zinc-600 font-medium">
+                  </ul>
+                </div>
+
+                <!-- Missing list -->
+                <div class="space-y-2">
+                  <h5 class="font-extrabold text-zinc-700 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i> Rubriques absentes
+                  </h5>
+                  <div id="audit-missing-badges" class="flex flex-wrap gap-1.5">
+                  </div>
+                </div>
+
+                <!-- Suggestion lists -->
+                <div class="col-span-1 md:col-span-2 space-y-2 pt-3 border-t border-zinc-100">
+                  <h5 class="font-extrabold text-teal-800 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Améliorations suggérées
+                  </h5>
+                  <ul id="audit-suggestions-list" class="space-y-2 text-zinc-650 font-medium">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPTION 2: Adapt to Job Announcement -->
+          <div id="ai-section-match" class="hidden space-y-4">
+            <div class="space-y-1">
+              <h2 class="text-sm font-extrabold text-zinc-850 uppercase tracking-tight font-display">Adaptation ciblée à l'Offre de votre choix</h2>
+              <p class="text-[11px] text-zinc-500 leading-relaxed">
+                Collez la description ou l'annonce de l'emploi pour adapter votre CV en optimisant l'inclusion de mots-clés d'adéquation sans altérer les faits.
+              </p>
+            </div>
+
+            <textarea id="ai-job-text" rows="5" placeholder="Collez l'offre d'emploi ici..." class="w-full border border-zinc-200 rounded-xl px-4 py-3 bg-zinc-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-all font-sans text-xs resize-none leading-relaxed"></textarea>
+
+            <div class="flex justify-end">
+              <button id="btn-run-match" class="flex items-center gap-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 px-5 py-3 rounded-xl shadow-md cursor-pointer transition-all font-display">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i> Analyser l'adéquation
+              </button>
+            </div>
+
+            <!-- Matching outputs -->
+            <div id="ai-match-output-wrapper" class="hidden border border-zinc-200 rounded-2xl p-5 bg-zinc-50/30 space-y-5 animate-slide">
+              <div class="flex items-center gap-3.5 pb-4 border-b border-zinc-100">
+                <div id="match-score-badge" class="w-14 h-14 bg-teal-50 border border-teal-200 rounded-full flex items-center justify-center font-black font-mono text-teal-800 font-display text-base shadow-sm">
+                  0%
+                </div>
+                <div>
+                  <h4 class="text-xs font-extrabold text-zinc-800 uppercase tracking-tight font-display">Indice de correspondance (Match score)</h4>
+                  <p id="match-score-subtext" class="text-[9px] text-zinc-500">Un score élevé contourne les premiers filtres automatiques.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                <!-- Matched keywords -->
+                <div class="bg-white border border-zinc-100 p-4 rounded-xl shadow-sm space-y-2">
+                  <h5 class="font-extrabold text-emerald-800 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Mots-clés validés
+                  </h5>
+                  <div id="match-keywords-validated" class="flex flex-wrap gap-1.5 pt-1">
+                  </div>
+                </div>
+
+                <!-- Missing keywords -->
+                <div class="bg-white border border-zinc-100 p-4 rounded-xl shadow-sm space-y-2">
+                  <h5 class="font-extrabold text-amber-800 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Mots-clés manquants
+                  </h5>
+                  <div id="match-keywords-missing" class="flex flex-wrap gap-1.5 pt-1">
+                  </div>
+                </div>
+
+                <!-- Gaps -->
+                <div class="col-span-1 md:col-span-2 bg-white border border-zinc-100 p-4 rounded-xl shadow-sm space-y-2">
+                  <h5 class="font-extrabold text-zinc-700 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i> Écarts importants détectés
+                  </h5>
+                  <ul id="match-gaps-list" class="space-y-1.5 list-disc list-inside text-zinc-650 font-medium">
+                  </ul>
+                </div>
+
+                <!-- Suggestions list -->
+                <div class="col-span-1 md:col-span-2 bg-white border border-zinc-100 p-4 rounded-xl shadow-sm space-y-2">
+                  <h5 class="font-extrabold text-teal-800 uppercase tracking-wider flex items-center gap-1 font-display">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Proposition de reformulations
+                  </h5>
+                  <ul id="match-suggestions-list" class="space-y-2 text-zinc-650 font-medium pt-1">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quick GDPR card -->
+      <div class="bg-zinc-900 text-white rounded-2xl p-5 border border-zinc-800 shadow-lg space-y-2 shrink-0">
+        <div class="flex items-center gap-2 text-teal-400">
+          <i data-lucide="shield" class="w-4 h-4"></i>
+          <h4 class="text-[10px] font-black uppercase tracking-wider font-display">Sécurisation ATS &amp; RGPD</h4>
+        </div>
+        <p class="text-[10px] text-zinc-300 leading-relaxed text-justify">
+          Curriculum produit des structures de CV optimisées pour les analyseurs de tri (ATS). Vos données d'édition demeurent exclusivement localisées dans votre navigateur Web et ne font l'objet d'aucune vente ou analyse commerciale tierce.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: CV TEMPLATE CANVAS PREVIEW & EXPORT -->
+    <div class="lg:col-span-7 flex flex-col gap-6" id="right-preview-container">
+      
+      <!-- Toolbar settings for active layout -->
+      <div class="bg-white rounded-2xl border border-zinc-200 p-5 shadow-sm space-y-4 no-print shrink-0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-zinc-100">
+          <div>
+            <h4 class="text-xs font-black text-zinc-800 uppercase tracking-tight font-display flex items-center gap-1">
+              <i data-lucide="eye" class="w-3.5 h-3.5 text-teal-600"></i> Palette du Thème
+            </h4>
+            <p class="text-[10px] text-zinc-400">Choisissez l'un des 4 designs testés conformes ATS.</p>
+          </div>
+
+          <!-- Color triggers list -->
+          <div class="flex flex-wrap gap-2">
+            <button id="tpl-classic" class="btn-template-styled active flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-bold cursor-pointer transition-all border-zinc-800 bg-zinc-800 text-white font-black">
+              <span class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-400"></span> ATS Classique
+            </button>
+            <button id="tpl-navy" class="btn-template-styled flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-bold cursor-pointer transition-all border-zinc-200 bg-white text-zinc-650">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-900"></span> Pro Bleu
+            </button>
+            <button id="tpl-green" class="btn-template-styled flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-bold cursor-pointer transition-all border-zinc-200 bg-white text-zinc-650">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-800"></span> Moderne Vert
+            </button>
+            <button id="tpl-orange" class="btn-template-styled flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-bold cursor-pointer transition-all border-zinc-200 bg-white text-zinc-650">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> Dyn Orange
+            </button>
+          </div>
+        </div>
+
+        <!-- Download operations panel -->
+        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div class="space-y-1">
+            <h4 class="text-xs font-extrabold text-zinc-800 uppercase tracking-tight font-display">Obtenir le CV Final</h4>
+            <p class="text-[10px] text-zinc-500">Générez un fichier PDF haute fidélité ou imprimez directement.</p>
+          </div>
+
+          <div class="flex gap-2.5 w-full sm:w-auto shrink-0 justify-end">
+            <button id="btn-print-cv" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 text-xs font-bold text-zinc-700 hover:text-zinc-950 bg-white border border-zinc-200 px-4 py-2.5 rounded-xl hover:bg-zinc-50 cursor-pointer transition-all font-display">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimer
+            </button>
+            <button id="btn-export-pdf" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-teal-600 to-emerald-600 px-5 py-2.5 rounded-xl shadow cursor-pointer hover:shadow-md transition-all font-display">
+              <i id="pdf-download-icon" data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span id="pdf-download-text">Exporter en PDF</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE THEME CV SHEET BLOCK -->
+      <div class="flex-1 overflow-x-auto">
+        <div id="cv-printable-document" class="bg-white rounded-xl shadow-lg border border-zinc-200 p-6 md:p-8 max-w-[21cm] min-h-[29.7cm] mx-auto font-sans">
+          
+          <!-- HEADER block inside CV sheet -->
+          <div id="cv-header-panel" class="p-6 md:p-8 rounded-t-xl transition-all -mx-6 -mt-6 md:-mx-8 md:-mt-8">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-6">
+              
+              <div class="flex items-center gap-4 sm:gap-5">
+                <!-- Profile photo or generic avatar -->
+                <div id="cv-photo-frame" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-zinc-300 bg-white overflow-hidden shadow-sm flex items-center justify-center shrink-0">
+                  <img id="cv-preview-img" src="" class="w-full h-full object-cover hidden" alt="Photo">
+                  <div id="cv-preview-avatar" class="text-zinc-400 w-full h-full flex items-center justify-center bg-zinc-100">
+                    <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div>
+                  <h1 class="text-2xl md:text-3xl font-black font-display tracking-tight text-zinc-900 uppercase leading-none">
+                    <span id="cv-display-firstname">Sophie</span> <span id="cv-display-lastname" class="text-zinc-800">Martin</span>
+                  </h1>
+                  <h2 id="cv-display-title" class="text-sm sm:text-base font-bold uppercase tracking-wide font-display mt-1.5 text-zinc-700">
+                    Développeur Web Full-Stack
+                  </h2>
+                </div>
+              </div>
+
+              <!-- Contacts grid details -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-zinc-600 font-medium md:max-w-md shrink-0">
+                <div id="cv-line-email" class="flex items-center gap-1.5">
+                  <i data-lucide="mail" class="w-3 h-3 text-zinc-400 shrink-0"></i>
+                  <span id="cv-display-email" class="break-all">sophie@email.com</span>
+                </div>
+                <div id="cv-line-phone" class="flex items-center gap-1.5">
+                  <i data-lucide="phone" class="w-3 h-3 text-zinc-400 shrink-0"></i>
+                  <span id="cv-display-phone">06 99 88 77 66</span>
+                </div>
+                <div id="cv-line-location" class="flex items-center gap-1.5">
+                  <i data-lucide="map-pin" class="w-3 h-3 text-zinc-400 shrink-0"></i>
+                  <span id="cv-display-location">Lyon, France</span>
+                </div>
+                <div id="cv-line-linkedin" class="flex items-center gap-1.5">
+                  <i data-lucide="linkedin" class="w-3 h-3 text-zinc-400 shrink-0"></i>
+                  <span id="cv-display-linkedin" class="truncate max-w-[150px]">sophie-martin-dev</span>
+                </div>
+                <div id="cv-line-website" class="flex items-center gap-1.5 col-span-1 sm:col-span-2">
+                  <i data-lucide="globe" class="w-3 h-3 text-zinc-400 shrink-0"></i>
+                  <span id="cv-display-website" class="truncate break-all">sophie-martin.io</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Description / Summary segment -->
+          <div id="cv-section-summary" class="mt-6">
+            <p id="cv-display-summary" class="text-xs md:text-sm text-zinc-700 leading-relaxed text-justify whitespace-pre-line">
+              Texte de résumé...
+            </p>
+          </div>
+
+          <!-- Dynamic Resume Content Sections -->
+
+          <!-- SECTION: EXPERIENCES -->
+          <div id="cv-section-experiences-wrapper" class="hidden">
+            <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5 text-zinc-700"></i>
+              <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                Expériences Professionnelles
+              </h3>
+            </div>
+            <div id="cv-experiences-list" class="space-y-4">
+              <!-- Render items dynamically -->
+            </div>
+          </div>
+
+          <!-- SECTION: EDUCATION -->
+          <div id="cv-section-educations-wrapper" class="hidden">
+            <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-zinc-700"></i>
+              <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                Formations académiques
+              </h3>
+            </div>
+            <div id="cv-educations-list" class="space-y-3">
+              <!-- Render items dynamically -->
+            </div>
+          </div>
+
+          <!-- SECTION: SKILLS -->
+          <div id="cv-section-skills-wrapper" class="hidden">
+            <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-zinc-700"></i>
+              <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                Compétences
+              </h3>
+            </div>
+            <div id="cv-skills-list" class="flex flex-wrap gap-1.5">
+              <!-- Render items dynamically -->
+            </div>
+          </div>
+
+          <!-- SECTION: LANGUAGES & CERTIFICATIONS -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Language column -->
+            <div id="cv-section-languages-wrapper" class="hidden">
+              <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-zinc-700"></i>
+                <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                  Langues
+                </h3>
+              </div>
+              <div id="cv-languages-list" class="space-y-1.5 text-xs">
+                <!-- Items -->
+              </div>
+            </div>
+
+            <!-- Certification column -->
+            <div id="cv-section-certifications-wrapper" class="hidden">
+              <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+                <i data-lucide="award" class="w-3.5 h-3.5 text-zinc-700"></i>
+                <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                  Certifications
+                </h3>
+              </div>
+              <div id="cv-certifications-list" class="space-y-1.5 text-xs">
+                <!-- Items -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SECTION: PROJECTS -->
+          <div id="cv-section-projects-wrapper" class="hidden">
+            <div class="cv-section-title-bar mt-6 mb-3 pb-1 border-b border-zinc-200 flex items-center gap-2">
+              <i data-lucide="compass" class="w-3.5 h-3.5 text-zinc-700"></i>
+              <h3 class="text-sm font-bold uppercase tracking-wider font-display text-zinc-800">
+                Projets réalisés
+              </h3>
+            </div>
+            <div id="cv-projects-list" class="space-y-3">
+              <!-- Items -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-6 border-t border-zinc-200 bg-white text-center text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-none no-print mt-12">
+    © 2026 Curriculum ATS Optimizer • Pas de compte requis • Conçu pour les recruteurs
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
