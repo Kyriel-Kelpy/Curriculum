@@ -110,6 +110,27 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---- Drag & drop réordonnancement (Expériences / Formations / Projets) ---- */
+.drag-item {
+  cursor: grab;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s, opacity 0.15s;
+}
+.drag-item:active { cursor: grabbing; }
+.drag-item.dragging { opacity: 0.4; }
+.drag-item.drag-over {
+  border-color: #a8a29e !important;
+  background: #ecebe9 !important;
+}
+.drag-handle {
+  cursor: grab;
+  color: #d6d3d1;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -1px;
+  user-select: none;
+}
+.drag-handle:hover { color: #a8a29e; }
+
 /* ---- Scrollbars discrètes ---- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -431,7 +452,7 @@
   #right-preview-container > div:first-child { display: none !important; }
   
   /* Le bloc CV occupe toute la page */
-  .flex-1.overflow-x-auto { overflow: visible !important; }
+  #cv-scroll-wrapper { overflow: visible !important; }
   
   #cv-printable-document {
     width: 210mm !important;

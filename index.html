@@ -96,45 +96,10 @@
     English
 </div>
   
-<body class="bg-stone-50 text-stone-900 font-sans min-h-screen flex flex-col antialiased">
-
-  <div id="access-screen"
-     style="position:fixed;inset:0;background:#fff;z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;">
-
-    <div style="max-width:400px;width:100%;text-align:center;font-family:Arial,sans-serif;">
-
-        <h2 style="font-size:28px;margin-bottom:10px;">
-            🔒 Accès privé
-        </h2>
-
-        <p style="margin-bottom:25px;color:#666;">
-            Entrez votre code d'accès.
-        </p>
-
-        <input
-            id="access-code"
-            type="text"
-            placeholder="Code d'accès"
-            style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-bottom:15px;font-size:16px;"
-        >
-
-        <button
-            onclick="checkAccess()"
-            style="width:100%;padding:12px;background:#2563eb;color:white;border:none;border-radius:10px;font-size:16px;cursor:pointer;">
-            Continuer
-        </button>
-
-        <p id="error"
-           style="margin-top:15px;color:#dc2626;display:none;">
-            Code invalide.
-        </p>
-
-    </div>
-
-</div>
+<body class="bg-stone-50 text-stone-900 font-sans min-h-screen lg:h-screen lg:overflow-hidden flex flex-col antialiased">
 
   <!-- NAVBAR -->
-  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 no-print">
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 no-print shrink-0">
     <div class="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-stone-900 flex items-center justify-center">
@@ -159,10 +124,10 @@
   </header>
 
   <!-- MAIN LAYOUT -->
-  <main class="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <main class="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:min-h-0 lg:overflow-hidden">
 
     <!-- LEFT PANEL -->
-    <div class="lg:col-span-5 flex flex-col gap-4 no-print">
+    <div class="lg:col-span-5 flex flex-col gap-4 no-print lg:min-h-0 lg:overflow-hidden">
 
       <!-- Tab Switcher -->
       <div class="bg-stone-100 p-1 rounded-xl flex shrink-0">
@@ -177,12 +142,12 @@
       </div>
 
       <!-- PANEL A : STEPPER FORM -->
-      <div id="panel-form-stepper" class="bg-white rounded-2xl border border-stone-200 shadow-sm flex flex-col flex-1">
+      <div id="panel-form-stepper" class="bg-white rounded-2xl border border-stone-200 shadow-sm flex flex-col flex-1 lg:min-h-0">
 
         <!-- Stepper Header -->
         <div class="p-5 border-b border-stone-100">
           <div class="flex justify-between items-center mb-3">
-            <span id="step-index-badge" class="text-[10px] font-mono text-stone-400 uppercase tracking-widest">Étape 1 / 15</span>
+            <span id="step-index-badge" class="text-[10px] font-mono text-stone-400 uppercase tracking-widest">Étape 1 / 16</span>
             <span id="step-progress-percent" class="text-xs font-semibold text-stone-700">0% complété</span>
           </div>
           <div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
@@ -354,6 +319,7 @@
                 <option value="intermédiaire" selected>Intermédiaire</option>
                 <option value="avancé">Avancé</option>
                 <option value="bilingue">Bilingue</option>
+                <option value="maternelle">Langue maternelle</option>
               </select>
               <button type="button" id="btn-add-lang" class="btn-secondary text-xs px-3 py-2 shrink-0">Ajouter</button>
             </div>
@@ -389,6 +355,21 @@
             <div id="projects-list-items" class="space-y-1.5"></div>
           </div>
 
+          <!-- STEP 16 : Loisirs -->
+          <div data-step-id="16" class="step-card hidden space-y-3">
+            <label class="field-label">Centres d'intérêt <span class="text-stone-300">(facultatif)</span></label>
+            <p class="text-xs text-stone-400">À utiliser avec parcimonie : pertinent surtout pour les profils juniors ou les secteurs où la personnalité compte. Laissez vide si ça n'apporte rien à votre candidature.</p>
+            <div class="flex gap-2">
+              <input type="text" id="in-temp-hobby" placeholder="Ex : Photographie, Course à pied..." class="field-input flex-1">
+              <button type="button" id="btn-add-hobby" class="btn-secondary px-4 shrink-0">Ajouter</button>
+            </div>
+            <div class="bg-stone-50 border border-stone-100 rounded-xl p-3 min-h-[60px]">
+              <div id="hobbies-list-badges" class="flex flex-wrap gap-1.5">
+                <span class="text-xs text-stone-300 italic">Aucun loisir ajouté</span>
+              </div>
+            </div>
+          </div>
+
         </div><!-- end step-fields-scroll -->
 
         <!-- Error Banner -->
@@ -412,7 +393,7 @@
       </div><!-- end panel-form-stepper -->
 
       <!-- PANEL B : AI ASSISTANT -->
-      <div id="panel-ai-dashboard" class="bg-white rounded-2xl border border-stone-200 shadow-sm flex-col flex-1 hidden">
+      <div id="panel-ai-dashboard" class="bg-white rounded-2xl border border-stone-200 shadow-sm flex-col flex-1 hidden lg:min-h-0">
 
         <!-- AI Sub Tabs -->
         <div class="flex border-b border-stone-100 px-5 pt-4 gap-4 shrink-0">
@@ -530,7 +511,7 @@
     </div><!-- end left panel -->
 
     <!-- RIGHT PANEL : CV PREVIEW -->
-    <div class="lg:col-span-7 flex flex-col gap-4" id="right-preview-container">
+    <div class="lg:col-span-7 flex flex-col gap-4 lg:min-h-0 lg:overflow-hidden" id="right-preview-container">
 
       <!-- Toolbar -->
       <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-sm no-print shrink-0">
@@ -566,7 +547,7 @@
       </div>
 
       <!-- CV SHEET - c'est exactement ce qui sera imprimé -->
-      <div class="flex-1 overflow-x-auto">
+      <div id="cv-scroll-wrapper" class="flex-1 overflow-auto lg:min-h-0">
         <div id="cv-printable-document" class="cv-page bg-white shadow-xl border border-stone-200 mx-auto font-sans">
 
           <!-- CV HEADER -->
@@ -674,6 +655,15 @@
               <div id="cv-projects-list" class="space-y-3"></div>
             </div>
 
+            <!-- Loisirs -->
+            <div id="cv-section-hobbies-wrapper" class="hidden cv-section">
+              <div class="cv-section-header">
+                <svg class="w-3.5 h-3.5 cv-section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+                <h3 class="cv-section-title">Centres d'intérêt</h3>
+              </div>
+              <div id="cv-hobbies-list" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
           </div><!-- end cv-body -->
         </div><!-- end cv-printable-document -->
       </div>
@@ -682,7 +672,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="py-4 border-t border-stone-200 bg-white text-center text-[10px] font-mono text-stone-300 uppercase tracking-widest no-print mt-4">
+  <footer class="py-4 border-t border-stone-200 bg-white text-center text-[10px] font-mono text-stone-300 uppercase tracking-widest no-print mt-4 shrink-0">
     © 2026 Curriculum • Données locales uniquement • Aucun compte requis
   </footer>
 
@@ -713,41 +703,5 @@ if(isTranslated){
 }
 </script>
 
-<script>
-
-const ACCESS_CODE = "CV-27JUL26"; // ← Tu changes uniquement cette ligne
-
-function checkAccess(){
-
-    const value = document.getElementById("access-code").value.trim();
-
-    if(value === ACCESS_CODE){
-
-        sessionStorage.setItem("cv_access","ok");
-
-        document.getElementById("access-screen").style.display="none";
-
-    }else{
-
-        document.getElementById("error").style.display="block";
-
-    }
-
-}
-
-if(sessionStorage.getItem("cv_access")==="ok"){
-
-    document.getElementById("access-screen").style.display="none";
-
-}
-
-document.getElementById("access-code").addEventListener("keypress",function(e){
-
-    if(e.key==="Enter") checkAccess();
-
-});
-
-</script>  
-  
 </body>
 </html>

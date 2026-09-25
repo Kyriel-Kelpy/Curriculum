@@ -13,11 +13,12 @@ let cvData = {
   skills: [],
   languages: [],
   certifications: [],
-  projects: []
+  projects: [],
+  hobbies: []
 };
 
 let currentStep = 1;
-const TOTAL_STEPS = 15;
+const TOTAL_STEPS = 16;
 let currentTemplate = 'classic';
 
 // ------- DEMO DATA -------
@@ -30,14 +31,15 @@ const DEMO_CV_DATA = {
   skills: ['React', 'Node.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Docker', 'Agile Scrum', 'Git'],
   languages: [{ id:'d-lang-1', name:'Français', level:'bilingue' }, { id:'d-lang-2', name:'Anglais', level:'avancé' }],
   certifications: [{ id:'d-cert-1', name:'AWS Certified Cloud Practitioner', issuer:'Amazon Web Services', year:'2024' }],
-  projects: [{ id:'d-proj-1', name:'Portfolio Interactif', description:'Vitrine personnelle présentant mes projets et livrables.', technologies:'React, Tailwind CSS, Motion', link:'github.com/sophie/portfolio' }]
+  projects: [{ id:'d-proj-1', name:'Portfolio Interactif', description:'Vitrine personnelle présentant mes projets et livrables.', technologies:'React, Tailwind CSS, Motion', link:'github.com/sophie/portfolio' }],
+  hobbies: ['Photographie', 'Course à pied', 'Échecs']
 };
 
 const STEP_TITLES = {
   1:'Prénom', 2:'Nom de famille', 3:'Titre professionnel', 4:'Adresse e-mail',
   5:'Téléphone', 6:'Ville & Pays', 7:'LinkedIn & Portfolio', 8:'Photo de profil',
   9:'Résumé professionnel', 10:'Compétences', 11:'Expériences professionnelles',
-  12:'Formations', 13:'Langues', 14:'Certifications', 15:'Projets'
+  12:'Formations', 13:'Langues', 14:'Certifications', 15:'Projets', 16:'Centres d\'intérêt'
 };
 
 const STEP_ICONS = {
@@ -55,7 +57,8 @@ const STEP_ICONS = {
   12: `<path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>`,
   13: `<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/>`,
   14: `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>`,
-  15: `<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/>`
+  15: `<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/>`,
+  16: `<path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>`
 };
 
 // ------- ANTHROPIC API (direct browser) -------
@@ -91,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     cvData = JSON.parse(JSON.stringify(DEMO_CV_DATA));
   }
+  if (!Array.isArray(cvData.hobbies)) cvData.hobbies = [];
   syncFormFromState();
   renderCVPreview();
   updateStepperUI();
@@ -138,6 +142,7 @@ function renderFormLists() {
   renderLanguagesForm();
   renderCertsForm();
   renderProjectsForm();
+  renderHobbiesForm();
 }
 
 function setVal(elId, val) {
@@ -198,6 +203,9 @@ function renderCVPreview() {
 
   // Projets
   renderCVSection('cv-section-projects-wrapper', 'cv-projects-list', cvData.projects, renderProjItem);
+
+  // Loisirs
+  renderCVSection('cv-section-hobbies-wrapper', 'cv-hobbies-list', cvData.hobbies, h => `<span class="cv-skill-tag">${escHTML(h)}</span>`);
 
   applyTheme(currentTemplate);
 }
@@ -342,13 +350,25 @@ function renderSkillsForm() {
 
 window.deleteSkill = i => { cvData.skills.splice(i, 1); saveAndRender(); renderSkillsForm(); };
 
+function renderHobbiesForm() {
+  const c = id('hobbies-list-badges');
+  if (!cvData.hobbies.length) { c.innerHTML = '<span class="text-xs text-stone-300 italic">Aucun loisir ajouté</span>'; return; }
+  c.innerHTML = cvData.hobbies.map((h, i) => `
+    <span class="inline-flex items-center gap-1 text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200 px-2.5 py-1 rounded-lg">
+      ${escHTML(h)}
+      <button onclick="deleteHobby(${i})" class="text-stone-300 hover:text-red-500 transition-colors ml-0.5 cursor-pointer">✕</button>
+    </span>`).join('');
+}
+window.deleteHobby = i => { cvData.hobbies.splice(i, 1); saveAndRender(); renderHobbiesForm(); };
+
 function renderExperiencesForm() {
   const c = id('experiences-list-items');
   if (!cvData.experiences.length) { c.innerHTML = '<div class="text-xs text-stone-300 italic py-1">Aucune expérience ajoutée.</div>'; return; }
   c.innerHTML = cvData.experiences.map((e, i) => `
-    <div class="flex items-center justify-between p-2.5 bg-stone-50 border border-stone-100 rounded-xl text-xs">
-      <div><span class="font-semibold text-stone-800">${escHTML(e.role)}</span><p class="text-stone-400 text-[10px]">${escHTML(e.company)} · ${escHTML(e.startDate)} – ${escHTML(e.endDate||'Présent')}</p></div>
-      <button onclick="deleteExp(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1">✕</button>
+    <div class="drag-item flex items-center gap-2 p-2.5 bg-stone-50 border border-stone-100 rounded-xl text-xs" draggable="true" data-index="${i}">
+      <span class="drag-handle shrink-0" title="Glisser pour réordonner">⠿⠿</span>
+      <div class="flex-1 min-w-0"><span class="font-semibold text-stone-800">${escHTML(e.role)}</span><p class="text-stone-400 text-[10px] truncate">${escHTML(e.company)} · ${escHTML(e.startDate)} – ${escHTML(e.endDate||'Présent')}</p></div>
+      <button onclick="deleteExp(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1 shrink-0">✕</button>
     </div>`).join('');
 }
 window.deleteExp = i => { cvData.experiences.splice(i, 1); saveAndRender(); renderExperiencesForm(); };
@@ -357,9 +377,10 @@ function renderEducationsForm() {
   const c = id('educations-list-items');
   if (!cvData.educations.length) { c.innerHTML = '<div class="text-xs text-stone-300 italic py-1">Aucune formation ajoutée.</div>'; return; }
   c.innerHTML = cvData.educations.map((e, i) => `
-    <div class="flex items-center justify-between p-2.5 bg-stone-50 border border-stone-100 rounded-xl text-xs">
-      <div><span class="font-semibold text-stone-800">${escHTML(e.degree)}</span><p class="text-stone-400 text-[10px]">${escHTML(e.school)} · ${escHTML(e.startDate)} – ${escHTML(e.endDate||'Présent')}</p></div>
-      <button onclick="deleteEdu(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1">✕</button>
+    <div class="drag-item flex items-center gap-2 p-2.5 bg-stone-50 border border-stone-100 rounded-xl text-xs" draggable="true" data-index="${i}">
+      <span class="drag-handle shrink-0" title="Glisser pour réordonner">⠿⠿</span>
+      <div class="flex-1 min-w-0"><span class="font-semibold text-stone-800">${escHTML(e.degree)}</span><p class="text-stone-400 text-[10px] truncate">${escHTML(e.school)} · ${escHTML(e.startDate)} – ${escHTML(e.endDate||'Présent')}</p></div>
+      <button onclick="deleteEdu(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1 shrink-0">✕</button>
     </div>`).join('');
 }
 window.deleteEdu = i => { cvData.educations.splice(i, 1); saveAndRender(); renderEducationsForm(); };
@@ -390,12 +411,66 @@ function renderProjectsForm() {
   const c = id('projects-list-items');
   if (!cvData.projects.length) { c.innerHTML = '<span class="text-xs text-stone-300 italic">Aucun projet.</span>'; return; }
   c.innerHTML = cvData.projects.map((p, i) => `
-    <div class="flex justify-between items-center bg-stone-50 px-3 py-2 rounded-xl border border-stone-100 text-xs">
-      <div><strong class="text-stone-800">${escHTML(p.name)}</strong><span class="text-stone-400 text-[10px] block truncate max-w-[200px]">${escHTML(p.description)}</span></div>
-      <button onclick="deleteProj(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1">✕</button>
+    <div class="drag-item flex items-center gap-2 bg-stone-50 px-3 py-2 rounded-xl border border-stone-100 text-xs" draggable="true" data-index="${i}">
+      <span class="drag-handle shrink-0" title="Glisser pour réordonner">⠿⠿</span>
+      <div class="flex-1 min-w-0"><strong class="text-stone-800">${escHTML(p.name)}</strong><span class="text-stone-400 text-[10px] block truncate max-w-[200px]">${escHTML(p.description)}</span></div>
+      <button onclick="deleteProj(${i})" class="text-stone-300 hover:text-red-500 cursor-pointer p-1 shrink-0">✕</button>
     </div>`).join('');
 }
 window.deleteProj = i => { cvData.projects.splice(i, 1); saveAndRender(); renderProjectsForm(); };
+
+// ------- DRAG & DROP RÉORDONNANCEMENT -------
+function enableDragReorder(containerId, getArray, rerenderFn) {
+  const container = id(containerId);
+  if (!container) return;
+  let dragSrcIndex = null;
+
+  container.addEventListener('dragstart', e => {
+    const item = e.target.closest('[data-index]');
+    if (!item) return;
+    dragSrcIndex = parseInt(item.getAttribute('data-index'), 10);
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', String(dragSrcIndex)); } catch (_) {}
+    item.classList.add('dragging');
+  });
+
+  container.addEventListener('dragend', () => {
+    container.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+    container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    dragSrcIndex = null;
+  });
+
+  container.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const item = e.target.closest('[data-index]');
+    if (!item) return;
+    container.querySelectorAll('.drag-over').forEach(el => { if (el !== item) el.classList.remove('drag-over'); });
+    item.classList.add('drag-over');
+  });
+
+  container.addEventListener('dragleave', e => {
+    const item = e.target.closest('[data-index]');
+    if (item) item.classList.remove('drag-over');
+  });
+
+  container.addEventListener('drop', e => {
+    e.preventDefault();
+    const item = e.target.closest('[data-index]');
+    if (item) item.classList.remove('drag-over');
+    if (!item || dragSrcIndex === null) return;
+    const targetIndex = parseInt(item.getAttribute('data-index'), 10);
+    if (targetIndex === dragSrcIndex) return;
+
+    const arr = getArray();
+    const [moved] = arr.splice(dragSrcIndex, 1);
+    arr.splice(targetIndex, 0, moved);
+
+    dragSrcIndex = null;
+    saveAndRender();
+    rerenderFn();
+  });
+}
 
 // ------- PHOTO -------
 function handlePhoto(file) {
@@ -558,7 +633,8 @@ async function runAudit() {
           skills: res.cvData.skills || [],
           languages: res.cvData.languages || [],
           certifications: res.cvData.certifications || [],
-          projects: res.cvData.projects || []
+          projects: res.cvData.projects || [],
+          hobbies: cvData.hobbies || []
         };
         saveAndRender(); syncFormFromState();
         const a = id('alert-import-success');
@@ -725,7 +801,7 @@ function setupEventListeners() {
   });
   id('btn-clear-data').addEventListener('click', () => {
     if (confirm('Vider entièrement le formulaire ?')) {
-      cvData = { title:'', summary:'', personalInfo:{ firstName:'',lastName:'',email:'',phone:'',city:'',country:'',linkedin:'',website:'',photoUrl:'' }, educations:[], experiences:[], skills:[], languages:[], certifications:[], projects:[] };
+      cvData = { title:'', summary:'', personalInfo:{ firstName:'',lastName:'',email:'',phone:'',city:'',country:'',linkedin:'',website:'',photoUrl:'' }, educations:[], experiences:[], skills:[], languages:[], certifications:[], projects:[], hobbies:[] };
       saveAndRender(); syncFormFromState(); currentStep = 1; updateStepperUI();
     }
   });
@@ -746,6 +822,20 @@ function setupEventListeners() {
     inSkill.value = '';
   });
   inSkill.addEventListener('keypress', e => { if (e.key === 'Enter') id('btn-add-skill').click(); });
+
+  // Hobbies
+  const inHobby = id('in-temp-hobby');
+  id('btn-add-hobby').addEventListener('click', () => {
+    const h = inHobby.value.trim();
+    if (h && !cvData.hobbies.includes(h)) { cvData.hobbies.push(h); saveAndRender(); renderHobbiesForm(); }
+    inHobby.value = '';
+  });
+  inHobby.addEventListener('keypress', e => { if (e.key === 'Enter') id('btn-add-hobby').click(); });
+
+  // Drag & drop réordonnancement
+  enableDragReorder('experiences-list-items', () => cvData.experiences, renderExperiencesForm);
+  enableDragReorder('educations-list-items', () => cvData.educations, renderEducationsForm);
+  enableDragReorder('projects-list-items', () => cvData.projects, renderProjectsForm);
 
   // Experience
   id('btn-add-experience').addEventListener('click', () => {
