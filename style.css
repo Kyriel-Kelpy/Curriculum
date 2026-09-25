@@ -10,7 +10,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #78716c; /* stone-500 */
+  color: #44403c; /* stone-700 */
 }
 
 .field-input {
@@ -83,7 +83,7 @@
   gap: 0.3rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: #78716c;
+  color: #44403c;
   background: #f5f5f4;
   border: 1px solid #e7e5e4;
   padding: 0.35rem 0.7rem;
@@ -175,7 +175,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #78716c;
+  color: #44403c;
   transition: color 0.2s;
 }
 
@@ -192,7 +192,7 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 8.5pt;
-  color: #57534e;
+  color: #44403c;
   font-weight: 500;
 }
 
@@ -217,7 +217,7 @@
 }
 
 .cv-section-icon {
-  color: #78716c;
+  color: #44403c;
   flex-shrink: 0;
   transition: color 0.2s;
 }
@@ -268,7 +268,7 @@
 .cv-exp-dates {
   font-size: 8pt;
   font-family: 'JetBrains Mono', monospace;
-  color: #a8a29e;
+  color: #57534e;
   font-weight: 500;
   white-space: nowrap;
   flex-shrink: 0;
@@ -276,7 +276,7 @@
 
 .cv-exp-desc {
   font-size: 8.5pt;
-  color: #57534e;
+  color: #44403c;
   line-height: 1.6;
   text-align: justify;
   white-space: pre-line;
@@ -322,13 +322,13 @@
 
 .cv-edu-meta {
   font-size: 8pt;
-  color: #78716c;
+  color: #44403c;
 }
 
 .cv-edu-dates {
   font-size: 8pt;
   font-family: 'JetBrains Mono', monospace;
-  color: #a8a29e;
+  color: #57534e;
   font-weight: 500;
   white-space: nowrap;
   flex-shrink: 0;
@@ -363,7 +363,7 @@
   font-size: 7.5pt;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
-  color: #a8a29e;
+  color: #57534e;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
