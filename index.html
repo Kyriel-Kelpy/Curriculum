@@ -109,14 +109,14 @@
         </div>
         <div>
           <span class="text-sm font-bold tracking-tight text-stone-900 font-serif">Curriculum</span>
-          <span class="text-[9px] uppercase font-semibold tracking-widest text-stone-400 block leading-none font-mono">Générateur de CV ATS</span>
+          <span class="text-[9px] uppercase font-semibold tracking-widest text-stone-700 block leading-none font-mono">Générateur de CV ATS</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <button id="btn-seed-data" class="text-xs font-medium text-stone-500 hover:text-stone-800 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+        <button id="btn-seed-data" class="text-xs font-medium text-stone-700 hover:text-stone-800 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
           Exemple
         </button>
-        <button id="btn-clear-data" class="text-xs font-medium text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+        <button id="btn-clear-data" class="text-xs font-medium text-red-700 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
           Vider
         </button>
       </div>
@@ -135,7 +135,7 @@
           <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
           Créer le CV
         </button>
-        <button id="tab-nav-analyze" class="tab-btn flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer text-stone-500 hover:text-stone-800">
+        <button id="tab-nav-analyze" class="tab-btn flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer text-stone-700 hover:text-stone-800">
           <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
           Assistant IA
         </button>
@@ -147,11 +147,11 @@
         <!-- Stepper Header -->
         <div class="p-5 border-b border-stone-100">
           <div class="flex justify-between items-center mb-3">
-            <span id="step-index-badge" class="text-[10px] font-mono text-stone-400 uppercase tracking-widest">Étape 1 / 16</span>
+            <span id="step-index-badge" class="text-[10px] font-mono text-stone-700 uppercase tracking-widest">Étape 1 / 16</span>
             <span id="step-progress-percent" class="text-xs font-semibold text-stone-700">0% complété</span>
           </div>
           <div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
-            <div id="step-progress-bar" class="bg-stone-800 h-full rounded-full transition-all duration-500" style="width: 6%"></div>
+            <div id="step-progress-bar" class="bg-stone-800 h-full rounded-full transition-all duration-700" style="width: 6%"></div>
           </div>
           <div class="mt-4 flex items-center gap-3">
             <div id="step-icon-container" class="w-9 h-9 bg-stone-100 rounded-xl flex items-center justify-center text-stone-700 shrink-0">
@@ -166,32 +166,32 @@
 
           <!-- STEP 1 -->
           <div data-step-id="1" class="step-card space-y-2">
-            <label class="field-label">Prénom <span class="text-red-400">*</span></label>
+            <label class="field-label">Prénom <span class="text-red-700">*</span></label>
             <input type="text" id="in-firstname" placeholder="Ex : Jean" class="field-input">
           </div>
 
           <!-- STEP 2 -->
           <div data-step-id="2" class="step-card hidden space-y-2">
-            <label class="field-label">Nom de famille <span class="text-red-400">*</span></label>
+            <label class="field-label">Nom de famille <span class="text-red-700">*</span></label>
             <input type="text" id="in-lastname" placeholder="Ex : Dupont" class="field-input">
           </div>
 
           <!-- STEP 3 -->
           <div data-step-id="3" class="step-card hidden space-y-2">
-            <label class="field-label">Titre professionnel <span class="text-red-400">*</span></label>
-            <p class="text-xs text-stone-400">Correspond exactement au poste ciblé pour maximiser le score ATS.</p>
+            <label class="field-label">Titre professionnel <span class="text-red-700">*</span></label>
+            <p class="text-xs text-stone-700">Correspond exactement au poste ciblé pour maximiser le score ATS.</p>
             <input type="text" id="in-title" placeholder="Ex : Développeur Full-Stack" class="field-input">
           </div>
 
           <!-- STEP 4 -->
           <div data-step-id="4" class="step-card hidden space-y-2">
-            <label class="field-label">Adresse e-mail <span class="text-red-400">*</span></label>
+            <label class="field-label">Adresse e-mail <span class="text-red-700">*</span></label>
             <input type="email" id="in-email" placeholder="jean.dupont@email.com" class="field-input">
           </div>
 
           <!-- STEP 5 -->
           <div data-step-id="5" class="step-card hidden space-y-2">
-            <label class="field-label">Téléphone <span class="text-stone-300">(optionnel)</span></label>
+            <label class="field-label">Téléphone <span class="text-stone-700">(optionnel)</span></label>
             <input type="tel" id="in-phone" placeholder="06 12 34 56 78" class="field-input">
           </div>
 
@@ -210,32 +210,32 @@
           <!-- STEP 7 -->
           <div data-step-id="7" class="step-card hidden space-y-4">
             <div class="space-y-2">
-              <label class="field-label">LinkedIn <span class="text-stone-300">(optionnel)</span></label>
+              <label class="field-label">LinkedIn <span class="text-stone-700">(optionnel)</span></label>
               <input type="url" id="in-linkedin" placeholder="linkedin.com/in/votre-profil" class="field-input">
             </div>
             <div class="space-y-2">
-              <label class="field-label">Portfolio / Site web <span class="text-stone-300">(optionnel)</span></label>
+              <label class="field-label">Portfolio / Site web <span class="text-stone-700">(optionnel)</span></label>
               <input type="url" id="in-website" placeholder="votre-portfolio.com" class="field-input">
             </div>
           </div>
 
           <!-- STEP 8 : Photo -->
           <div data-step-id="8" class="step-card hidden space-y-4">
-            <div class="flex flex-col items-center p-6 border-2 border-dashed border-stone-200 hover:border-stone-400 rounded-xl bg-stone-50 transition-all" id="photo-drag-area">
+            <div class="flex flex-col items-center p-6 border-2 border-dashed border-stone-200 hover:border-stone-700 rounded-xl bg-stone-50 transition-all" id="photo-drag-area">
               <div class="w-20 h-20 rounded-full border-2 border-stone-200 bg-stone-100 overflow-hidden flex items-center justify-center mb-4">
                 <img id="guided-photo-preview" src="" class="w-full h-full object-cover hidden" alt="Photo">
                 <div id="guided-photo-placeholder" class="w-full h-full flex items-center justify-center">
-                  <svg class="w-8 h-8 text-stone-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  <svg class="w-8 h-8 text-stone-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </div>
               </div>
               <label class="text-xs font-semibold text-white bg-stone-800 hover:bg-stone-900 px-4 py-2 rounded-lg cursor-pointer transition-all">
                 Choisir une photo
                 <input type="file" id="in-photo-file" accept="image/*" class="hidden">
               </label>
-              <button type="button" id="btn-delete-photo" class="hidden mt-2 text-xs text-red-500 hover:text-red-700 cursor-pointer">Supprimer</button>
-              <p class="text-[10px] text-stone-400 text-center mt-3">PNG/JPG · max 2 Mo · Facultatif</p>
+              <button type="button" id="btn-delete-photo" class="hidden mt-2 text-xs text-red-700 hover:text-red-700 cursor-pointer">Supprimer</button>
+              <p class="text-[10px] text-stone-700 text-center mt-3">PNG/JPG · max 2 Mo · Facultatif</p>
             </div>
-            <p class="text-xs text-stone-400 bg-stone-50 rounded-lg p-3 border border-stone-100">💡 Dans beaucoup de secteurs, la photo est optionnelle. Un avatar par défaut sera utilisé si vous n'en ajoutez pas.</p>
+            <p class="text-xs text-stone-700 bg-stone-50 rounded-lg p-3 border border-stone-100">💡 Dans beaucoup de secteurs, la photo est optionnelle. Un avatar par défaut sera utilisé si vous n'en ajoutez pas.</p>
           </div>
 
           <!-- STEP 9 : Résumé -->
@@ -247,7 +247,7 @@
                 Générer avec l'IA
               </button>
             </div>
-            <p class="text-xs text-stone-400">3 à 5 lignes percutantes. L'IA peut le rédiger d'après vos informations.</p>
+            <p class="text-xs text-stone-700">3 à 5 lignes percutantes. L'IA peut le rédiger d'après vos informations.</p>
             <textarea id="in-summary" rows="5" placeholder="Décrivez vos objectifs de carrière et vos points forts..." class="field-input resize-none leading-relaxed"></textarea>
           </div>
 
@@ -266,7 +266,7 @@
             </div>
             <div class="bg-stone-50 border border-stone-100 rounded-xl p-3 min-h-[60px]">
               <div id="skills-list-badges" class="flex flex-wrap gap-1.5">
-                <span class="text-xs text-stone-300 italic">Aucune compétence ajoutée</span>
+                <span class="text-xs text-stone-700 italic">Aucune compétence ajoutée</span>
               </div>
             </div>
           </div>
@@ -311,7 +311,7 @@
 
           <!-- STEP 13 : Langues -->
           <div data-step-id="13" class="step-card hidden space-y-3">
-            <label class="field-label">Langues <span class="text-stone-300">(facultatif)</span></label>
+            <label class="field-label">Langues <span class="text-stone-700">(facultatif)</span></label>
             <div class="bg-stone-50 border border-stone-100 rounded-xl p-4 flex gap-2 items-center">
               <input type="text" id="lang-name" placeholder="Ex : Anglais" class="field-input flex-1 text-xs">
               <select id="lang-level" class="field-input text-xs w-auto">
@@ -328,7 +328,7 @@
 
           <!-- STEP 14 : Certifications -->
           <div data-step-id="14" class="step-card hidden space-y-3">
-            <label class="field-label">Certifications <span class="text-stone-300">(facultatif)</span></label>
+            <label class="field-label">Certifications <span class="text-stone-700">(facultatif)</span></label>
             <div class="bg-stone-50 border border-stone-100 rounded-xl p-4 space-y-3">
               <div class="grid grid-cols-2 gap-2">
                 <input type="text" id="cert-name" placeholder="Nom (ex: AWS Cloud)" class="field-input text-xs">
@@ -342,7 +342,7 @@
 
           <!-- STEP 15 : Projets -->
           <div data-step-id="15" class="step-card hidden space-y-3">
-            <label class="field-label">Projets & Réalisations <span class="text-stone-300">(facultatif)</span></label>
+            <label class="field-label">Projets & Réalisations <span class="text-stone-700">(facultatif)</span></label>
             <div class="bg-stone-50 border border-stone-100 rounded-xl p-4 space-y-3">
               <div class="grid grid-cols-2 gap-2">
                 <input type="text" id="proj-name" placeholder="Titre du projet *" class="field-input text-xs">
@@ -357,15 +357,15 @@
 
           <!-- STEP 16 : Loisirs -->
           <div data-step-id="16" class="step-card hidden space-y-3">
-            <label class="field-label">Centres d'intérêt <span class="text-stone-300">(facultatif)</span></label>
-            <p class="text-xs text-stone-400">À utiliser avec parcimonie : pertinent surtout pour les profils juniors ou les secteurs où la personnalité compte. Laissez vide si ça n'apporte rien à votre candidature.</p>
+            <label class="field-label">Centres d'intérêt <span class="text-stone-700">(facultatif)</span></label>
+            <p class="text-xs text-stone-700">À utiliser avec parcimonie : pertinent surtout pour les profils juniors ou les secteurs où la personnalité compte. Laissez vide si ça n'apporte rien à votre candidature.</p>
             <div class="flex gap-2">
               <input type="text" id="in-temp-hobby" placeholder="Ex : Photographie, Course à pied..." class="field-input flex-1">
               <button type="button" id="btn-add-hobby" class="btn-secondary px-4 shrink-0">Ajouter</button>
             </div>
             <div class="bg-stone-50 border border-stone-100 rounded-xl p-3 min-h-[60px]">
               <div id="hobbies-list-badges" class="flex flex-wrap gap-1.5">
-                <span class="text-xs text-stone-300 italic">Aucun loisir ajouté</span>
+                <span class="text-xs text-stone-700 italic">Aucun loisir ajouté</span>
               </div>
             </div>
           </div>
@@ -380,7 +380,7 @@
 
         <!-- Stepper Nav -->
         <div class="flex justify-between items-center p-5 border-t border-stone-100">
-          <button type="button" id="btn-step-prev" disabled class="flex items-center gap-1.5 text-xs font-semibold text-stone-400 hover:text-stone-700 border border-stone-200 hover:bg-stone-50 rounded-xl px-4 py-2.5 transition-all cursor-pointer disabled:opacity-30 disabled:pointer-events-none">
+          <button type="button" id="btn-step-prev" disabled class="flex items-center gap-1.5 text-xs font-semibold text-stone-700 hover:text-stone-700 border border-stone-200 hover:bg-stone-50 rounded-xl px-4 py-2.5 transition-all cursor-pointer disabled:opacity-30 disabled:pointer-events-none">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
             Précédent
           </button>
@@ -400,7 +400,7 @@
           <button id="ai-sub-tab-audit" class="ai-sub-tab active pb-3 text-xs font-semibold text-stone-900 border-b-2 border-stone-900">
             Analyser un CV existant
           </button>
-          <button id="ai-sub-tab-match" class="ai-sub-tab pb-3 text-xs font-semibold text-stone-400 border-b-2 border-transparent hover:text-stone-700 transition-colors">
+          <button id="ai-sub-tab-match" class="ai-sub-tab pb-3 text-xs font-semibold text-stone-700 border-b-2 border-transparent hover:text-stone-700 transition-colors">
             Adapter à une offre
           </button>
         </div>
@@ -416,7 +416,7 @@
           <div id="ai-section-audit" class="space-y-4">
             <div>
               <h3 class="text-sm font-bold text-stone-900 font-serif">Audit & Import de CV existant</h3>
-              <p class="text-xs text-stone-400 mt-1">Collez le texte brut de votre CV pour obtenir un diagnostic ATS complet et importer les données.</p>
+              <p class="text-xs text-stone-700 mt-1">Collez le texte brut de votre CV pour obtenir un diagnostic ATS complet et importer les données.</p>
             </div>
             <textarea id="ai-raw-cv-text" rows="6" placeholder="Collez ici le texte complet de votre CV existant..." class="field-input resize-none w-full leading-relaxed"></textarea>
             <button id="btn-run-audit" class="btn-primary w-full text-xs py-2.5 flex items-center justify-center gap-2">
@@ -437,7 +437,7 @@
                   </div>
                   <div>
                     <p class="text-xs font-bold text-stone-800">Score ATS Initial</p>
-                    <p class="text-[10px] text-stone-400">Min. recommandé : 80/100</p>
+                    <p class="text-[10px] text-stone-700">Min. recommandé : 80/100</p>
                   </div>
                 </div>
                 <button id="btn-import-audit-data" class="btn-primary text-xs px-4 py-2">Importer les données</button>
@@ -466,7 +466,7 @@
           <div id="ai-section-match" class="hidden space-y-4">
             <div>
               <h3 class="text-sm font-bold text-stone-900 font-serif">Adaptation à l'offre d'emploi</h3>
-              <p class="text-xs text-stone-400 mt-1">Collez la description du poste pour évaluer l'adéquation de votre CV et obtenir des recommandations.</p>
+              <p class="text-xs text-stone-700 mt-1">Collez la description du poste pour évaluer l'adéquation de votre CV et obtenir des recommandations.</p>
             </div>
             <textarea id="ai-job-text" rows="6" placeholder="Collez ici le texte de l'offre d'emploi..." class="field-input resize-none w-full leading-relaxed"></textarea>
             <button id="btn-run-match" class="btn-primary w-full text-xs py-2.5 flex items-center justify-center gap-2">
@@ -476,10 +476,10 @@
 
             <div id="ai-match-output-wrapper" class="hidden border border-stone-200 rounded-xl p-4 space-y-4 bg-stone-50/50">
               <div class="flex items-center gap-3 pb-4 border-b border-stone-200">
-                <div id="match-score-badge" class="w-12 h-12 bg-stone-100 border border-stone-300 rounded-full flex items-center justify-center font-black font-mono text-stone-800 text-sm shadow-sm">0%</div>
+                <div id="match-score-badge" class="w-12 h-12 bg-stone-100 border border-stone-700 rounded-full flex items-center justify-center font-black font-mono text-stone-800 text-sm shadow-sm">0%</div>
                 <div>
                   <p class="text-xs font-bold text-stone-800">Taux de correspondance</p>
-                  <p class="text-[10px] text-stone-400">Un score élevé déjoue les premiers filtres automatiques.</p>
+                  <p class="text-[10px] text-stone-700">Un score élevé déjoue les premiers filtres automatiques.</p>
                 </div>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -502,7 +502,7 @@
         </div><!-- end scrollable -->
 
         <!-- GDPR Notice -->
-        <div class="mx-5 mb-5 p-3 bg-stone-50 border border-stone-100 rounded-xl text-[10px] text-stone-400 leading-relaxed">
+        <div class="mx-5 mb-5 p-3 bg-stone-50 border border-stone-100 rounded-xl text-[10px] text-stone-700 leading-relaxed">
           🔒 Vos données restent dans votre navigateur. Aucun stockage serveur, aucune revente.
         </div>
 
@@ -518,17 +518,17 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <!-- Theme switcher -->
           <div class="flex flex-wrap gap-2 items-center">
-            <span class="text-[10px] font-semibold text-stone-400 uppercase tracking-wider mr-1">Thème :</span>
+            <span class="text-[10px] font-semibold text-stone-700 uppercase tracking-wider mr-1">Thème :</span>
             <button id="tpl-classic" class="theme-btn active px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-900 bg-stone-900 text-white">
-              <span class="w-2 h-2 rounded-full bg-stone-400 inline-block mr-1"></span>Classique
+              <span class="w-2 h-2 rounded-full bg-stone-700 inline-block mr-1"></span>Classique
             </button>
-            <button id="tpl-navy" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-300">
+            <button id="tpl-navy" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-700">
               <span class="w-2 h-2 rounded-full bg-indigo-700 inline-block mr-1"></span>Marine
             </button>
-            <button id="tpl-green" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-300">
+            <button id="tpl-green" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-700">
               <span class="w-2 h-2 rounded-full bg-emerald-700 inline-block mr-1"></span>Forêt
             </button>
-            <button id="tpl-orange" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-300">
+            <button id="tpl-orange" class="theme-btn px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all border-stone-200 bg-white text-stone-600 hover:border-stone-700">
               <span class="w-2 h-2 rounded-full bg-amber-600 inline-block mr-1"></span>Ambre
             </button>
           </div>
@@ -557,7 +557,7 @@
               <div id="cv-photo-frame" class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm flex items-center justify-center bg-stone-100">
                 <img id="cv-preview-img" src="" class="w-full h-full object-cover hidden" alt="">
                 <div id="cv-preview-avatar" class="w-full h-full flex items-center justify-center">
-                  <svg class="w-8 h-8 text-stone-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  <svg class="w-8 h-8 text-stone-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </div>
               </div>
               <!-- Name & Title -->
@@ -672,7 +672,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="py-4 border-t border-stone-200 bg-white text-center text-[10px] font-mono text-stone-300 uppercase tracking-widest no-print mt-4 shrink-0">
+  <footer class="py-4 border-t border-stone-200 bg-white text-center text-[10px] font-mono text-stone-700 uppercase tracking-widest no-print mt-4 shrink-0">
     © 2026 Curriculum • Données locales uniquement • Aucun compte requis
   </footer>
 
